@@ -10,24 +10,31 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri =
-  "mongodb+srv://ak-accessories:<password>@cluster0.pqt07.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pqt07.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
 
-// async function run() {
-//     try {
+async function run() {
+  try {
+    await client.connect();
+    const partsCollection = client.db("akAccessories").collection("parts");
 
-//     }
-//     finally {
+    // get all parts
+    app.get("/parts", async (req, res) => {
+      const query = {};
+      const cursor = partsCollection.find(query);
+      const parts = await cursor.toArray();
+      console.log(parts);
+      res.send(parts);
+    });
+  } finally {
+  }
+}
 
-//     }
-// }
-
-// run().catch(console.dir);
+run().catch(console.dir);
 
 app.get("/", (req, res) => {
   res.send("Hello From Ak Accessories Portal!");
