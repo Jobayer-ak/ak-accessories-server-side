@@ -21,13 +21,13 @@ async function run() {
   try {
     await client.connect();
     const partsCollection = client.db("akAccessories").collection("parts");
+    const ordersCollection = client.db("akAccessories").collection("orders");
 
     // parts api
     app.get("/parts", async (req, res) => {
       const query = {};
       const cursor = partsCollection.find(query);
       const parts = await cursor.toArray();
-      console.log(parts);
       res.send(parts);
     });
 
@@ -38,6 +38,30 @@ async function run() {
       const item = await partsCollection.findOne(query);
 
       res.send(item);
+    });
+
+    // Orders api
+    app.post("/orders", async (req, res) => {
+      const orders = req.body;
+      const query = {
+        partName: orders.name,
+        partDesc: orders.description,
+        partImg: orders.img,
+        partQuantity: orders.quantity,
+        partPrice: orders.price,
+        customerEmail: orders.email,
+        customerName: orders.name,
+        address: orders.address,
+        phone: orders.phone,
+      };
+      const exists = ordersCollection.findOne(query);
+      // console.log(exists);
+      // if (exists) {
+      //   return res.send({ success: false, orders: exists });
+      // }
+      const result = await ordersCollection.insertOne(orders);
+      // console.log(result);
+      return res.send({ success: true, result });
     });
   } finally {
   }
