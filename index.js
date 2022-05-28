@@ -24,7 +24,14 @@ async function run() {
     const ordersCollection = client.db("akAccessories").collection("orders");
     const reviewCollection = client.db("akAccessories").collection("reviews");
 
-    // reviews api
+    // get reviews api
+    app.get("/reviews", async (req, res) => {
+      const query = {};
+      const reviews = await reviewCollection.find(query).toArray();
+      res.send(reviews);
+    });
+
+    // add reviews api
     app.post("/reviews", async (req, res) => {
       const reviewAdd = req.body;
       const review = await reviewCollection.insertOne(reviewAdd);
