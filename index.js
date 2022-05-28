@@ -40,6 +40,20 @@ async function run() {
       res.send(item);
     });
 
+    // get only orders
+    app.get("/orders", async (req, res) => {
+      const email = req.params.customerEmail;
+      const orders = await ordersCollection.find(email).toArray();
+      res.send(orders);
+    });
+
+    // Delete order
+    app.delete("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await ordersCollection.deleteOne(query);
+      res.send(result);
+    });
     // Orders api
     app.post("/orders", async (req, res) => {
       const orders = req.body;
