@@ -22,6 +22,14 @@ async function run() {
     await client.connect();
     const partsCollection = client.db("akAccessories").collection("parts");
     const ordersCollection = client.db("akAccessories").collection("orders");
+    const reviewCollection = client.db("akAccessories").collection("reviews");
+
+    // reviews api
+    app.post("/reviews", async (req, res) => {
+      const reviewAdd = req.body;
+      const review = await reviewCollection.insertOne(reviewAdd);
+      res.send(review);
+    });
 
     // parts api
     app.get("/parts", async (req, res) => {
