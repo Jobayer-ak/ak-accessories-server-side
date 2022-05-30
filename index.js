@@ -159,7 +159,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const item = await partsCollection.findOne(query);
-
       res.send(item);
     });
 
