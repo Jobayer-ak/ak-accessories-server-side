@@ -40,6 +40,7 @@ async function run() {
     const ordersCollection = client.db("akAccessories").collection("orders");
     const reviewCollection = client.db("akAccessories").collection("reviews");
     const userCollection = client.db("akAccessories").collection("users");
+    const profileCollection = client.db("akAccessories").collection("profile");
 
     // verify admin
     const verifyAdmin = async (req, res, next) => {
@@ -93,7 +94,7 @@ async function run() {
         { email: email },
         process.env.ACCESS_TOKEN_SECRET,
         {
-          expiresIn: "1h",
+          expiresIn: "5d",
         }
       );
       res.send({ result, token });
@@ -117,6 +118,31 @@ async function run() {
     app.post("/parts", async (req, res) => {
       const newParts = req.body;
       const result = await partsCollection.insertOne(newParts);
+      res.send(result);
+    });
+
+    // add profile info api
+    app.post("/myProfile", async (req, res) => {
+      const newProfile = req.body;
+      const result = await profileCollection.insertOne(newProfile);
+      res.send(result);
+    });
+
+    // update profile info api
+    app.put("/updateProfile/:email", async (req, res) => {
+      const email = req.params.email;
+      const user = req.body;
+      const filter = { email: email };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: user,
+      };
+
+      const result = await profileCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
       res.send(result);
     });
 
