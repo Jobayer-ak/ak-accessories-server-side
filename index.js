@@ -4,14 +4,14 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 //middleware
 app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pqt07.mongodb.net/?retryWrites=true&w=majority`;
-const path = `mongodb+srv://e-warehouse:${process.env.DB_PASS}@cluster0.kdv73.mongodb.net/warehouse`
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
