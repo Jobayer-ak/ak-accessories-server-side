@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pqt07.mongodb.net/?retryWrites=true&w=majority`;
+const path = `mongodb+srv://e-warehouse:${process.env.DB_PASS}@cluster0.kdv73.mongodb.net/warehouse`
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -94,7 +95,7 @@ async function run() {
         { email: email },
         process.env.ACCESS_TOKEN_SECRET,
         {
-          expiresIn: "5d",
+          expiresIn: "300d",
         }
       );
       res.send({ result, token });
