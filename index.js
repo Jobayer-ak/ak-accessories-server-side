@@ -123,14 +123,12 @@ async function run() {
         console.log('Parts: ', result);
         res.send(result);
       } catch (error) {
-
-        console.log("err: ", error);
+        console.log('err: ', error);
         res.status(500).json({
           success: false,
-          error: error
-        })
+          error: error,
+        });
       }
-     
     });
 
     // add profile info api
@@ -160,10 +158,17 @@ async function run() {
 
     // parts api
     app.get('/parts', async (req, res) => {
-      const query = {};
-      const cursor = partsCollection.find(query);
-      const parts = await cursor.toArray();
-      res.send(parts);
+      try {
+        const query = {};
+        const cursor = partsCollection.find(query);
+        const parts = await cursor.toArray();
+        res.status(200).send(parts);
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          error: error,
+        })
+      }
     });
 
     // GET specific parts
