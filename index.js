@@ -123,7 +123,12 @@ async function run() {
         console.log('Parts: ', result);
         res.send(result);
       } catch (error) {
+
         console.log("err: ", error);
+        res.status(500).json({
+          success: false,
+          error: error
+        })
       }
      
     });
