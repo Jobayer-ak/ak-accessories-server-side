@@ -160,7 +160,7 @@ async function run() {
     app.get('/parts', async (req, res) => {
       try {
         const query = {};
-        const cursor = partsCollection.find(query);
+        const cursor = partsCollection.find({});
         const parts = await cursor.toArray();
         res.status(200).send(parts);
       } catch (error) {
