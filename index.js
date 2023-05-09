@@ -162,7 +162,7 @@ async function run() {
         const query = {};
         const cursor = partsCollection.find({});
         const parts = await cursor.toArray();
-        // console.log("parts: ", parts);
+        console.log("parts: ", parts);
         res.status(200).json({ parts: parts });
       } catch (error) {
         res.status(500).json({
