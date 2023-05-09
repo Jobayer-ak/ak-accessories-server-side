@@ -163,12 +163,12 @@ async function run() {
         const cursor = partsCollection.find({});
         const parts = await cursor.toArray();
         // console.log("parts: ", parts);
-        res.send(parts);
+        res.status(200).json(parts);
       } catch (error) {
         res.status(500).json({
           success: false,
           error: error,
-        })
+        });
       }
     });
 
